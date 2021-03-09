@@ -1,3 +1,4 @@
+#define _USE_MATH_DEFINES
 #include<iostream>
 #include<cmath>
 using namespace std;
@@ -28,8 +29,29 @@ ComplexNumber ComplexNumber::operator-(const ComplexNumber &c){
 	return ComplexNumber(real-c.real,imag-c.imag);
 }
 
-//Write your code here
+ComplexNumber operator+(double r , const ComplexNumber &z){ return ComplexNumber(r+z.real, z.imag); }
 
+ComplexNumber operator-(double r, const ComplexNumber &z){ return ComplexNumber(r-z.real, -1*z.imag); }
+
+ComplexNumber ComplexNumber::operator*(const ComplexNumber &z) { return ComplexNumber((real*z.real)-(imag*z.imag),(imag*z.real)+(z.imag*real)); }
+ComplexNumber operator*(double r, const ComplexNumber &z){ return ComplexNumber(z.real*r, z.imag*r); }
+
+ComplexNumber ComplexNumber::operator/(const ComplexNumber &z) {return ComplexNumber(((real*z.real)+(imag*z.imag))/(pow(z.real,2)+pow(z.imag,2)),((imag*z.real)-(real*z.imag))/(pow(z.real,2)+pow(z.imag,2)));}
+ComplexNumber operator/(double r, const ComplexNumber &z) { return ComplexNumber(r,0)/z; }
+
+bool ComplexNumber::operator==(const ComplexNumber &z) { return (real == z.real && imag == z.imag);}
+bool operator==(double r, const ComplexNumber &z) { return r==z.real&&z.imag == 0;}
+
+
+double ComplexNumber::abs() { return sqrt(pow(real,2)+pow(imag,2)); }
+double ComplexNumber::angle() { return (atan2(imag, real)*180/M_PI);}
+
+ostream & operator<<(ostream &os, const ComplexNumber &z){
+	if (z.imag == 0) return os << z.real;
+	if (z.real == 0 && z.imag != 0) return os << z.imag << "i";
+	if (z.imag >= 0) return os << z.real << "+" << z.imag << "i";
+	return os << z.real << z.imag << "i";
+}
 int main(){
 	ComplexNumber a(1.5,2),b(3.2,-2.5),c(-1,1.2);	
 	cout << a << "\n";
